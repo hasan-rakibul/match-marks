@@ -14,8 +14,8 @@ python3 match.py --lms <lms_file.csv> --lms_col <LMS_COL> --local <local_file.xl
 ```
   -h, --help          show this help message and exit
   --lms               Path to LMS csv file
-  --lms_col           LMS column index to compare with. Index starts from 0.
+  --lms_col           nth LMS column to compare with
   --local             Path to local xlsx file
-  --local_col         Local column index to compare with. Index starts from 0.
+  --local_col         nth Local column to compare with
   --print_exception   Print error of exception handling
 ```

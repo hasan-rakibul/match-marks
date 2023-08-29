@@ -5,9 +5,9 @@ import argparse
 def main():
     parser = argparse.ArgumentParser(description='Compare between two files (csv and xlsx) to check if there are any new marks on the local file.')
     parser.add_argument('--lms', type=str, help='Path to LMS csv file', required=True)
-    parser.add_argument('--lms_col', type=int, help='nth LMS column to compare with.', required=True)
+    parser.add_argument('--lms_col', type=int, help='nth LMS column to compare with', required=True)
     parser.add_argument('--local', type=str, help='Path to local xlsx file', required=True)
-    parser.add_argument('--local_col', type=int, help='nth local column to compare with.', required=True)
+    parser.add_argument('--local_col', type=int, help='nth local column to compare with', required=True)
     
     parser.add_argument('--print_exception', type=bool, help='Print error of exception handling', default=False)
 

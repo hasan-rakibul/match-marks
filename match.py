@@ -5,11 +5,11 @@ import argparse
 def main():
     parser = argparse.ArgumentParser(description='Compare between two files (csv and xlsx) to check if there are any new marks on the local file.')
     parser.add_argument('--lms', type=str, help='Path to LMS csv file', required=True)
-    parser.add_argument('--lms_col_idx', type=int, help='LMS column index to compare with. Index starts from 0.', required=True)
+    parser.add_argument('--lms_col', type=int, help='nth LMS column to compare with.', required=True)
     parser.add_argument('--local', type=str, help='Path to local xlsx file', required=True)
-    parser.add_argument('--local_col_idx', type=int, help='Local column index to compare with. Index starts from 0.', required=True)
+    parser.add_argument('--local_col', type=int, help='nth local column to compare with.', required=True)
     
-    parser.add_argument('--print_error', type=bool, help='Print error of exception handling', default=False)
+    parser.add_argument('--print_exception', type=bool, help='Print error of exception handling', default=False)
 
     args = parser.parse_args()
 
@@ -17,13 +17,14 @@ def main():
     lms=pd.read_csv(args.lms, index_col=2)
     local=pd.read_excel(args.local, index_col=2)
     
-    lms_col = lms.columns[args.lms_col_idx]
-    local_col = local.columns[args.local_col_idx]
+    # input: nth column whereas python is 0-based. Plus, I will make student_id as index (so, one column index is vanished there)
+    lms_col = lms.columns[args.lms_col-2]
+    local_col = local.columns[args.local_col-2]
     
     print('CHECK CAREFULLY!! Comparing Between:')
     print(f'\tLMS column name: {lms_col}')
     print(f'\tLocal column name: {local_col}')
-    print('Provide correct lms_col_idx and local_col_idx if they are wrong. Remember col_idx starts from 0. \n')
+    print('Provide correct lms_col_idx and local_col_idx if they are wrong. Remember col_idx starts from 1. \n')
     
     for row in lms.itertuples():
         try:
@@ -39,7 +40,7 @@ def main():
                 print('\nMismatch found!!!')
                 print(f'Student ID: {index}\tMark: {local_mark}\tName: {name}')
         except Exception as e:
-            if args.print_error:
+            if args.print_exception:
                 print('\n!!!!! Error !!!!!')
                 print(e)
                 print(f'Student ID: {row.Index}\n')

@@ -1,5 +1,5 @@
 import pandas as pd
-import numpy as np
+import math
 import argparse
 
 def main():
@@ -9,7 +9,7 @@ def main():
     parser.add_argument('--local', type=str, help='Path to local xlsx file', required=True)
     parser.add_argument('--local_col', type=int, help='nth local column to compare with', required=True)
     
-    parser.add_argument('--print_exception', type=bool, help='Print error of exception handling', default=False)
+    parser.add_argument('--print_exception', type=bool, help='Print error of exception handling', default=False, action=argparse.BooleanOptionalAction)
 
     args = parser.parse_args()
 
@@ -24,7 +24,7 @@ def main():
     print('CHECK CAREFULLY!! Comparing Between:')
     print(f'\tLMS column name: {lms_col}')
     print(f'\tLocal column name: {local_col}')
-    print('Provide correct lms_col_idx and local_col_idx if they are wrong. Remember col_idx starts from 1. \n')
+    print('Provide correct lms_col and local_col if they are wrong. Remember they start from 1. \n')
     
     for row in lms.itertuples():
         try:
@@ -34,11 +34,13 @@ def main():
             lms_mark = float(lms.loc[index, lms_col])
             local_mark = float(local.loc[index, local_col])
             
-            if (local_mark is not np.nan) and lms_mark != local_mark:
+            # empty marks are NaN
+            if(not math.isnan(local_mark)) and lms_mark != local_mark and (not args.print_exception):
                 '''For empty marks they are NaN and we don't need to proceed if local mark is empty for a student'''
                 name = local.loc[index, 'First Name'] + ' ' + local.loc[index, 'Last Name']
                 print('\nMismatch found!!!')
                 print(f'Student ID: {index}\tMark: {local_mark}\tName: {name}')
+        
         except Exception as e:
             if args.print_exception:
                 print('\n!!!!! Error !!!!!')

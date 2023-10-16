@@ -29,23 +29,31 @@ def main():
     for row in lms.itertuples():
         try:
             index = int(row.Index)
-    
+            
             # making both as float to compare
-            lms_mark = float(lms.loc[index, lms_col])
             local_mark = float(local.loc[index, local_col])
+
+            # if lms mark is 'Needs Marking' or 'In Progress' then it is 0.0
+            try:
+                lms_mark = float(lms.loc[index, lms_col])
+            except:
+                lms_mark = 0.0
             
             # empty marks are NaN
             if(not math.isnan(local_mark)) and lms_mark != local_mark and (not args.print_exception):
                 '''For empty marks they are NaN and we don't need to proceed if local mark is empty for a student'''
-                name = local.loc[index, 'First Name'] + ' ' + local.loc[index, 'Last Name']
+                lastname = local.loc[index, 'Last Name']
+                firstname = local.loc[index, 'First Name']
                 print('\nMismatch found!!!')
-                print(f'Student ID: {index}\tMark: {local_mark}\tName: {name}')
+                print(f'Student ID: {index}\tMark: {local_mark}\tLast Name: {lastname}\tFirst Name: {firstname}')
         
         except Exception as e:
             if args.print_exception:
                 print('\n!!!!! Error !!!!!')
                 print(e)
-                print(f'Student ID: {row.Index}\n')
+                lastname = lms.loc[index, 'Last Name']
+                firstname = lms.loc[index, 'First Name']
+                print(f'Student ID: {row.Index}\tLast Name: {lastname}\tFirst Name: {firstname}\n')
 
 
 if __name__ == '__main__':

@@ -13,9 +13,9 @@ def main():
 
     args = parser.parse_args()
 
-    # Reading the files and making the studen_id (col index 2) as the dataframe index
-    lms=pd.read_csv(args.lms, index_col=2)
-    local=pd.read_excel(args.local, index_col=2)
+    # Reading the files and making the usernames (col index 3) as the dataframe index. Some student ID are empty, so using username
+    lms=pd.read_csv(args.lms, index_col=3)
+    local=pd.read_excel(args.local, index_col=3)
     
     # input: nth column whereas python is 0-based. Plus, I will make student_id as index (so, one column index is vanished there)
     lms_col = lms.columns[args.lms_col-2]
@@ -40,7 +40,7 @@ def main():
                 lms_mark = 0.0
             
             # empty marks are NaN
-            if(not math.isnan(local_mark)) and lms_mark != local_mark and (not args.print_exception):
+            if(not math.isnan(local_mark)) and lms_mark != local_mark:
                 '''For empty marks they are NaN and we don't need to proceed if local mark is empty for a student'''
                 lastname = local.loc[index, 'Last Name']
                 firstname = local.loc[index, 'First Name']

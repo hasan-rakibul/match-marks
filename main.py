@@ -8,8 +8,6 @@ def main():
     parser.add_argument('--lms_col', type=int, help='nth LMS column to compare with', required=True)
     parser.add_argument('--local', type=str, help='Path to local xlsx file', required=True)
     parser.add_argument('--local_col', type=int, help='nth local column to compare with', required=True)
-    
-    parser.add_argument('--print_exception', type=bool, help='Print error of exception handling', default=False, action=argparse.BooleanOptionalAction)
 
     args = parser.parse_args()
 
@@ -42,7 +40,7 @@ def main():
             continue
         
         lms_mark = lms.loc[index, lms_col]
-        if lms_mark == 'In Progress' or lms_mark == 'Needs Marking': # those who submitted in LMS
+        if str(lms_mark) == 'nan' or lms_mark == 'In Progress' or lms_mark == 'Needs Marking': # empty (nan) or those who submitted in LMS
             lms_mark = 0.0
         elif lms_mark[:13] == 'Needs Marking': # those who submitted after their marks are uploaded in LMS, marks would be 'Needs Marking(<marks>)'
             lms_mark = lms_mark[14:-1] # extracting the marks. 13th is '(' and the end has ')'

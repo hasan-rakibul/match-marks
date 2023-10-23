@@ -16,6 +16,10 @@ def main():
     # Reading the files and making the usernames (col index 3) as the dataframe index. Some student ID are empty, so using username
     lms=pd.read_csv(args.lms, index_col=3)
     local=pd.read_excel(args.local, index_col=3)
+
+    # convert the index dtype to str; there was a mismatch between lms and local
+    local.index = local.index.map(str)
+    lms.index = lms.index.map(str)
     
     # input: nth column whereas python is 0-based. Plus, I will make student_id as index (so, one column index is vanished there)
     lms_col = lms.columns[args.lms_col-2]
@@ -25,36 +29,32 @@ def main():
     print(f'\tLMS column name: {lms_col}')
     print(f'\tLocal column name: {local_col}')
     print('Provide correct lms_col and local_col if they are wrong. Remember they start from 1. \n')
-    
-    for row in lms.itertuples():
-        try:
-            index = int(row.Index)
-            
-            # making both as float to compare
-            local_mark = float(local.loc[index, local_col])
 
-            # if lms mark is 'Needs Marking' or 'In Progress' then it is 0.0
-            try:
-                lms_mark = float(lms.loc[index, lms_col])
-            except:
-                lms_mark = 0.0
-            
-            # empty marks are NaN
-            if(not math.isnan(local_mark)) and lms_mark != local_mark:
-                '''For empty marks they are NaN and we don't need to proceed if local mark is empty for a student'''
-                lastname = local.loc[index, 'Last Name']
-                firstname = local.loc[index, 'First Name']
-                print('\nMismatch found!!!')
-                print(f'Student ID: {index}\tMark: {local_mark}\tLast Name: {lastname}\tFirst Name: {firstname}')
+    common_index = lms.index.intersection(local.index)
+
+    for index in common_index:
+        # convert marks to float
+
+        local_mark = float(local.loc[index, local_col])
         
-        except Exception as e:
-            if args.print_exception:
-                print('\n!!!!! Error !!!!!')
-                print(e)
-                lastname = lms.loc[index, 'Last Name']
-                firstname = lms.loc[index, 'First Name']
-                print(f'Student ID: {row.Index}\tLast Name: {lastname}\tFirst Name: {firstname}\n')
+        # empty marks are NaN
+        if math.isnan(local_mark):
+            continue
+        
+        lms_mark = lms.loc[index, lms_col]
+        if lms_mark == 'In Progress' or lms_mark == 'Needs Marking': # those who submitted in LMS
+            lms_mark = 0.0
+        elif lms_mark[:13] == 'Needs Marking': # those who submitted after their marks are uploaded in LMS, marks would be 'Needs Marking(<marks>)'
+            lms_mark = lms_mark[14:-1] # extracting the marks. 13th is '(' and the end has ')'
 
+        lms_mark = float(lms_mark)
+
+        if lms_mark != local_mark:
+            '''For empty marks they are NaN and we don't need to proceed if local mark is empty for a student'''
+            lastname = lms.loc[index, 'Last Name']
+            firstname = lms.loc[index, 'First Name']
+            print('\n\tMismatch found!!!')
+            print(f'Student ID: {index}\tMark: {local_mark}\tLast Name: {lastname}\tFirst Name: {firstname}')
 
 if __name__ == '__main__':
     main()

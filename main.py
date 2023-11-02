@@ -1,6 +1,7 @@
 import pandas as pd
 import math
 import argparse
+from colorama import Back
 
 def main():
     parser = argparse.ArgumentParser(description='Compare between two files (csv and xlsx) to check if there are any new marks on the local file.')
@@ -24,8 +25,8 @@ def main():
     local_col = local.columns[args.local_col-2]
     
     print('CHECK CAREFULLY!! Comparing Between:')
-    print(f'\tLMS column name: {lms_col}')
-    print(f'\tLocal column name: {local_col}')
+    print('\tLMS column name: ' + Back.YELLOW + lms_col + Back.RESET)
+    print('\tLocal column name: ' + Back.YELLOW + local_col + Back.RESET)
     print('Provide correct lms_col and local_col if they are wrong. Remember they start from 1. \n')
 
     common_index = lms.index.intersection(local.index)

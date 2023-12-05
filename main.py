@@ -37,19 +37,21 @@ def main():
         local_mark = float(local.loc[index, local_col])
         
         # empty marks are NaN
+        # sometimes when some marks are only on LMS, we don't need to proceed if local mark is empty for a student
         if math.isnan(local_mark):
             continue
         
         lms_mark = lms.loc[index, lms_col]
-        if str(lms_mark) == 'nan' or lms_mark == 'In Progress' or lms_mark == 'Needs Marking': # empty (nan) or those who submitted in LMS
-            lms_mark = 0.0
-        elif lms_mark[:13] == 'Needs Marking': # those who submitted after their marks are uploaded in LMS, marks would be 'Needs Marking(<marks>)'
-            lms_mark = lms_mark[14:-1] # extracting the marks. 13th is '(' and the end has ')'
 
-        lms_mark = float(lms_mark)
+        if type(lms_mark) == str:
+            if str(lms_mark) == 'nan' or lms_mark == 'In Progress' or lms_mark == 'Needs Marking': # empty (nan) or those who submitted in LMS
+                lms_mark = 0.0
+            elif lms_mark[:13] == 'Needs Marking': # those who submitted after their marks are uploaded in LMS, marks would be 'Needs Marking(<marks>)'
+                lms_mark = lms_mark[14:-1] # extracting the marks. 13th is '(' and the end has ')'
+
+            lms_mark = float(lms_mark)
 
         if lms_mark != local_mark:
-            '''For empty marks they are NaN and we don't need to proceed if local mark is empty for a student'''
             lastname = lms.loc[index, 'Last Name']
             firstname = lms.loc[index, 'First Name']
             print('\n\tMismatch found!!!')

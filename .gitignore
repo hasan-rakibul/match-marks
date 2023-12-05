@@ -2,6 +2,7 @@
 *.csv
 *.xlsx
 *.xls
+DSA-2023-S2.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

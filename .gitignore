@@ -1,8 +1,12 @@
+archived/
+
 # data files
 *.csv
 *.xlsx
 *.xls
-DSA-2023-S2.md
+notes.md
+
+.make_env_ready.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

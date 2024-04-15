@@ -33,8 +33,11 @@ def main():
 
     for index in common_index:
         # convert marks to float
-
-        local_mark = float(local.loc[index, local_col])
+        try:
+            local_mark = float(local.loc[index, local_col])
+        except:
+            print(Back.RED + "Error: " + Back.RESET + "Student ID " + index + " has invalid mark in local file")
+            continue
         
         # empty marks are NaN
         # sometimes when some marks are only on LMS, we don't need to proceed if local mark is empty for a student

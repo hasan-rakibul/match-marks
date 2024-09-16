@@ -24,19 +24,20 @@ def main():
     lms_col = lms.columns[args.lms_col-2]
     local_col = local.columns[args.local_col-2]
     
-    print('CHECK CAREFULLY!! Comparing Between:')
+    print('\nCHECK CAREFULLY!! Comparing Between:')
     print('\tLMS column name: ' + Back.YELLOW + lms_col + Back.RESET)
     print('\tLocal column name: ' + Back.YELLOW + local_col + Back.RESET)
     print('Provide correct lms_col and local_col if they are wrong. Remember they start from 1. \n')
 
     common_index = lms.index.intersection(local.index)
 
+    print("Last Name, First Name, Student ID, Mark: xy (Sorted by Last Name)")
     for index in common_index:
         # convert marks to float
         try:
             local_mark = float(local.loc[index, local_col])
         except:
-            print(Back.RED + "Error: " + Back.RESET + "Student ID " + index + " has invalid mark in local file")
+            print(Back.RED + "\nError: " + Back.RESET + "Student ID " + index + " has invalid mark in local file")
             continue
         
         # empty marks are NaN
@@ -57,8 +58,8 @@ def main():
         if lms_mark != local_mark:
             lastname = lms.loc[index, 'Last Name']
             firstname = lms.loc[index, 'First Name']
-            print('\n\tMismatch found!!!')
-            print(f'Student ID: {index}\tMark: {local_mark}\tLast Name: {lastname}\tFirst Name: {firstname}')
+            print("-"*50)
+            print(f'{lastname}, {firstname}, {index}, Mark: {local_mark}')
 
 if __name__ == '__main__':
     main()

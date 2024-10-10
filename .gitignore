@@ -4,7 +4,6 @@ archived/
 *.csv
 *.xlsx
 *.xls
-notes.md
 
 .make_env_ready.sh
 

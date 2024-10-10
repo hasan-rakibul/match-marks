@@ -3,25 +3,15 @@ Assuming you have a local copy of students' marks in `xlsx` and you want to comp
 
 It is assumed that some marks may be directly entered in the LMS; so, the codebase will only compare between the two files for the students who have marks in the `xlsx` file.
 
+# Files
+- `match_mark.sh` and `match.py`: Earlier version, which compares and outputs the result in the terminal.
+- `main_update_lms.py`: Updated version
+  - Compares and updates the LMS file based on local file
+  - Reads mapping from `mapping.json` file, which must have correct mappings on what you want to compare. Remember they are numeric column numbers in corresponding CSV and XLSX files, and they start from 1.
+
 ## Usage
-Configure filenames and run:
-```bash
-./match_mark.sh
-```
-It will ask for `lms_col` and `local_col`. Alternatively, you can pass them as arguments:
+Configure mapping between the columns in the `xlsx` and `csv` files in the `mapping.json` file. Then run the following command:
 
 ```bash
-python3 match.py --lms <lms_file.csv> --lms_col <LMS_COL> --local <local_file.xlsx> --local_col <LOCAL_COL>
-```
-
-The output will be sorted by last name.
-
-## Arguments
-
-```bash
-  -h, --help          show this help message and exit
-  --lms               Path to LMS csv file
-  --lms_col           nth LMS column to compare with
-  --local             Path to local xlsx file
-  --local_col         nth Local column to compare with
+python main_update_lms.py
 ```

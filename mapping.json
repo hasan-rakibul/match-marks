@@ -1,0 +1,12 @@
+{
+    "Prac 1": {"lms_col": 10, "local_col": 7},
+    "Prac 2": {"lms_col": 11, "local_col": 11},
+    "Prac 3": {"lms_col": 12, "local_col": 15},
+    "Prac 4": {"lms_col": 13, "local_col": 19},
+    "Prac 5": {"lms_col": 14, "local_col": 23},
+    "Prac 6": {"lms_col": 15, "local_col": 27},
+    "Prac 7": {"lms_col": 16, "local_col": 31},
+    "Prac 8": {"lms_col": 17, "local_col": 35},
+    "Mid Semester Test": {"lms_col": 19, "local_col": 39},
+    "Final Assignment": {"lms_col": 20, "local_col": 43}
+}
